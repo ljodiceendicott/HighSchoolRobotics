@@ -1,0 +1,50 @@
+#include <Wire.h>
+#include "rgb_lcd.h"
+
+rgb_lcd lcd;
+
+const int colorR = 255;
+const int colorG = 0;
+const int colorB = 0;
+// defines pins numbers
+const int trigPin = 12;
+const int echoPin = 13;
+// defines variables
+long duration;
+int distance;
+void setup() {
+pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+Serial.begin(9600); // Starts the serial communication
+  lcd.begin(16, 2);
+
+    lcd.setRGB(colorR, colorG, colorB);
+
+}
+void loop() {
+// Clears the trigPin
+digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+// Sets the trigPin on HIGH state for 10 micro seconds
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);
+// Reads the echoPin, returns the sound wave travel time in microseconds
+duration = pulseIn(echoPin, HIGH);
+// Calculating the distance
+distance= duration*0.034/2;
+// Prints the distance on the Serial Monitor
+Serial.print("Distance: ");
+Serial.println(distance);
+ lcd.setCursor(0, 0);
+lcd.print("distance: ");
+lcd.println(distance);
+lcd.setCursor(0,1);
+if(distance <= 35){
+  lcd.println("BACK UP");
+}
+else{
+  lcd.println("SUP B");
+}
+}
+
